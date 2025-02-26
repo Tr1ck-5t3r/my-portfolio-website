@@ -168,12 +168,16 @@ a{
   }
 
 @keyframes fadeIn {
-  from {
+  0% {
     opacity: 0.1;
     scale: 0.8;
   }
-  to {
+  50% {
     opacity: 1;
+    scale: 1;
+  }
+  100% {
+    opacity: 0.95;
     scale: 1;
   } 
 }

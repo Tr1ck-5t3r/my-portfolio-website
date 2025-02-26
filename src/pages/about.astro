@@ -1,23 +1,57 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import AboutMe from '../components/AboutMe.astro';
-import Certifications from '../components/Certifications.astro';
-import { Name, SITE_DESCRIPTION } from '../consts';
-import Experience from '../components/Experience.astro';
-import Awards from '../components/Awards.astro';
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import AboutMe from "../components/AboutMe.astro";
+import Certifications from "../components/Certifications.astro";
+import { Name, SITE_DESCRIPTION as desc, url, img } from "../consts";
+import Experience from "../components/Experience.astro";
+import Awards from "../components/Awards.astro";
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={Name} description={SITE_DESCRIPTION} />
+    <!-- Metadata -->
+    <meta charset="utf-8" />
+    <link rel="preload" as="image" href="/tarun.webp" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Quicksand:wght@300..700&family=Syncopate:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={url} />
+
+    <!-- Primary Meta Tags -->
+    <title>{Name}</title>
+    <meta name="title" content={Name} />
+    <meta name="description" content={desc} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={url} />
+    <meta property="og:title" content={Name} />
+    <meta property="og:site_name" content="About Tarun R G" />
+    <meta property="og:description" content={desc} />
+    <meta property="og:image" content={img} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={url} />
+    <meta property="twitter:title" content={Name} />
+    <meta property="twitter:description" content={desc} />
+    <meta property="twitter:image" content={img} />
   </head>
   <body>
     <Header />
     <main>
-      <AboutMe/>
+      <AboutMe />
       <Experience />
       <Certifications />
       <Awards />

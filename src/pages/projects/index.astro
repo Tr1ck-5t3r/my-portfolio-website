@@ -1,20 +1,56 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import { Name , SITE_DESCRIPTION } from '../../consts';
-import { getCollection } from 'astro:content';
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+import { Name, SITE_DESCRIPTION as desc, img } from "../../consts";
+import { getCollection } from "astro:content";
 
-const posts = (await getCollection('projects')).sort(
+const posts = (await getCollection("projects")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
+
+const url = "https://tarun-rg.in/projects/";
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={Name} description={SITE_DESCRIPTION} />
+    <!-- Metadata -->
+    <meta charset="utf-8" />
+    <link rel="preload" as="image" href="/tarun.webp" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Quicksand:wght@300..700&family=Syncopate:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={url} />
+
+    <!-- Primary Meta Tags -->
+    <title>{Name}</title>
+    <meta name="title" content={Name} />
+    <meta name="description" content={desc} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={url} />
+    <meta property="og:title" content={Name} />
+    <meta property="og:site_name" content="Tarun R G's projects" />
+    <meta property="og:description" content={desc} />
+    <meta property="og:image" content={img} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={url} />
+    <meta property="twitter:title" content={Name} />
+    <meta property="twitter:description" content={desc} />
+    <meta property="twitter:image" content={img} />
     <style>
       main {
         display: flex;
@@ -45,7 +81,9 @@ const posts = (await getCollection('projects')).sort(
         background: var(--mesh-2);
         border-radius: 12px;
         overflow: hidden;
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+        transition:
+          transform 0.3s ease-in-out,
+          box-shadow 0.3s ease;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
 
@@ -96,20 +134,24 @@ const posts = (await getCollection('projects')).sort(
         <p>Here are some of the projects I've worked on.</p>
         <div class="project-container">
           {
-              posts.map((post) => (
-                  <a href={`/projects/${post.id}/`} class="project-card">
-                    <div class="project-header">
-                      <img src={post.data.heroImage} alt={post.data.title} class="project-image" />
-                    </div>
-                    <div class="project-body">
-                      <h3>{post.data.title}</h3>
-                      <p>{post.data.description}</p>
-                      <p class="date">
-                        <FormattedDate date={post.data.pubDate}/>
-                      </p>
-                    </div>
-                  </a>
-              ))
+            posts.map((post) => (
+              <a href={`/projects/${post.id}/`} class="project-card">
+                <div class="project-header">
+                  <img
+                    src={post.data.heroImage}
+                    alt={post.data.title}
+                    class="project-image"
+                  />
+                </div>
+                <div class="project-body">
+                  <h3>{post.data.title}</h3>
+                  <p>{post.data.description}</p>
+                  <p class="date">
+                    <FormattedDate date={post.data.pubDate} />
+                  </p>
+                </div>
+              </a>
+            ))
           }
         </div>
       </section>
