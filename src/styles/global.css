@@ -21,6 +21,7 @@ html.light {
   background-color: var(--bg-color);
   color: var(--text-color);
   font-family: 'Quicksand', sans-serif;
+  scroll-behavior: smooth;
 }
 
 html {
@@ -44,6 +45,7 @@ html {
   background-color: var(--bg-color);
   color: var(--text-color);
   font-family: 'Quicksand', sans-serif;
+  scroll-behavior: smooth;
 }
 
 a{
