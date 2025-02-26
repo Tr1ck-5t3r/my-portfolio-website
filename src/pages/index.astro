@@ -3,17 +3,19 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import AboutMini from "../components/AboutMini.astro";
 import Hero from "../components/Hero.astro";
-import { Name, SITE_DESCRIPTION as desc ,url, img} from "../consts";
+import { Name, SITE_DESCRIPTION as desc, url, img } from "../consts";
 import Projects from "../components/Projects.astro";
 import Experience from "../components/Experience.astro";
+import SpeedInsights from "@vercel/speed-insights/astro";
+import Analytics from "@vercel/analytics/astro";
 import "../styles/global.css";
-
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <!-- Metadata -->
+
     <meta charset="utf-8" />
     <link rel="preload" as="image" href="/tarun.webp" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -58,6 +60,8 @@ import "../styles/global.css";
       <Experience />
       <Projects />
     </main>
+    <Analytics/>
+    <SpeedInsights/>
     <Footer />
   </body>
 </html>
