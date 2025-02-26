@@ -3,7 +3,7 @@
 
 export const Name = 'Tarun RG';
 export const url = 'https://tarun-rg.in';
-export const img = '/tarun.webp';
+export const img = "https://tarun-rg.in/tarun.webp";
 export const desig = 'Final year student @ Amrita Vishwa Vidyapeetham Chennai';
 export const profile = '/tarun.webp';
 const baseurl = "tarun-rg.in"
