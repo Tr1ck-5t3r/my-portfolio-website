@@ -46,6 +46,12 @@ html {
   font-family: 'Quicksand', sans-serif;
 }
 
+a{
+  text-decoration: none;
+  color: var(--text-color);
+  cursor: pointer;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -145,7 +151,7 @@ body {
 
 a{
   text-decoration: none;
-  color: var(--clr-2);
+  color: var(--text-color);
   cursor: pointer;
 }
 
