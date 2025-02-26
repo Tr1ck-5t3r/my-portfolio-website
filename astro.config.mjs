@@ -5,16 +5,20 @@ import starlight from '@astrojs/starlight';
 import vercel from '@astrojs/vercel';
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://tarun-rg.in',
+  site: "https://tarun-rg.in",
 
   integrations: [
-    starlight({ 
-      title: 'Tarun R G', 
+    starlight({
+      title: "Tarun R G",
       disable404Route: true,
     }),
     mdx(),
     sitemap(),
   ],
 
-  adapter: vercel(),
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
+  }),
 });
