@@ -1,34 +1,49 @@
 ---
-import { certificates } from '../consts';
-import type { Certificate } from '../consts';
+import { certificates } from "../consts";
+import type { Certificate } from "../consts";
 
 const validatedCertificates: Certificate[] = certificates;
+const placeholderCertImage = "/images/placeholder-cert.png"; // Ensure this exists
 ---
 
 <section id="certificates" class="certificates-section">
-  <div class="certificates-container"  >
+  <div class="certificates-container">
     <h2 class="section-title">My Certifications 🏆</h2>
     <div class="certificates-grid">
       {
-        validatedCertificates.map(({ label, image, dates, description }) => (
-          <div class="certificate-card fadediv">
-            <div class="certificate-header">
-              <img
-                src={image.src}
-                alt={image.alt || label}
-                class="certificate-image"
-                loading="lazy"
-              />
+        validatedCertificates.map(
+          ({ label, image, dates, description }, index) => (
+            <div
+              class="certificate-card fadediv"
+              style={`--card-index: ${index};`}
+            >
+              {/* Image Header */}
+              <div class="certificate-header">
+                <img
+                  src={image?.src || placeholderCertImage}
+                  alt={image?.alt || label}
+                  class="certificate-image"
+                  loading="lazy"
+                  width="400"
+                  {
+                  /* Provide aspect hint */ }
+                  height="200"
+                  onerror={`this.onerror=null; this.src=${placeholderCertImage};`}
+                />
+              </div>
+              {/* Content Body */}
+              <div class="certificate-body">
+                <h3 class="certificate-label">{label}</h3>
+                {(dates?.start || dates?.end) && (
+                  <p class="date-range">
+                    Issued: {dates.start}
+                  </p>
+                )}
+                <p class="certificate-description">{description}</p>
+              </div>
             </div>
-            <div class="certificate-body">
-              <h3>{label}</h3>
-              <p class="date-range">
-                {dates.start} - {dates.end}
-              </p>
-              <p>{description}</p>
-            </div>
-          </div>
-        ))
+          )
+        )
       }
     </div>
   </div>
@@ -41,78 +56,210 @@ const validatedCertificates: Certificate[] = certificates;
     align-items: center;
     flex-direction: column;
     color: var(--text-color);
-    padding: 4rem 2rem;
+    padding: 5rem 1rem;
+    background-color: var(--bg-color);
   }
 
   .certificates-container {
-    width: 100%;
-    max-width: 1000px;
+    width: 90%;
+    max-width: 1100px;
     text-align: center;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+    margin-bottom: 4rem;
+    font-weight: 600;
+    color: var(--text-color);
   }
 
   .certificates-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+    gap: 2.5rem; /* Increased gap */
+    width: 100%;
   }
 
   .certificate-card {
     display: flex;
-    flex-direction: column;
-    background: var(--bg-muted);
-    backdrop-filter: blur(12px);
+    flex-direction: column; /* Image top, content below */
+    background-color: var(--bg-muted);
     border-radius: 12px;
-    overflow: hidden;
-    padding: 1.5rem;
+    border: 1px solid var(--bg-muted);
+    box-shadow: var(--nav-shadow);
+    overflow: hidden; /* Important for image border-radius */
+    text-decoration: none;
+    color: inherit;
+    position: relative;
     transition:
-      transform 0.3s ease-in-out,
-      box-shadow 0.3s ease;
+      transform 0.3s ease,
+      box-shadow 0.3s ease,
+      border-color 0.3s ease;
+    outline: none;
+    text-align: left; /* Align text left within card */
+    /* Animation base */
+    opacity: 0;
+    transform: translateY(15px);
   }
 
   .certificate-card:hover {
-    transform: scale(1.05);
-    box-shadow: var(--nav-shadow);
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Adjust shadow details as needed */
+    border-color: var(--clr-2);
+  }
+
+  .certificate-card:focus-visible {
+    /* Added focus state */
+    border-color: var(--clr-2);
+    box-shadow:
+      0 0 0 3px var(--bg-color),
+      0 0 0 5px var(--clr-2);
+    transform: translateY(-2px) scale(1.005);
+  }
+
+  .certificate-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 0.5s ease-out,
+      transform 0.5s ease-out,
+      box-shadow 0.3s ease,
+      border-color 0.3s ease;
+    transition-delay: calc(var(--card-index, 0) * 70ms);
   }
 
   .certificate-header {
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 180px; /* Set a fixed height for consistency */
     overflow: hidden;
+    position: relative;
+    background-color: var(--bg-muted); /* Placeholder bg */
+    /* No border needed if image covers */
   }
 
   .certificate-image {
-    width: 150px;
-    height: 150px;
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* Use 'contain' if it's logos/badges, 'cover' if it's full certificate images */
+    object-fit: contain;
+    /* Add padding within the image container if using contain */
+    padding: 1rem;
+    box-sizing: border-box; /* Include padding in dimensions */
+    transition: transform 0.4s ease;
+  }
+
+  /* Optional: Zoom image slightly on card hover */
+  .certificate-card:hover .certificate-image {
+    transform: scale(1.05);
   }
 
   .certificate-body {
+    padding: 1.5rem; /* Padding for content */
     text-align: left;
-    padding-top: 1rem;
+    flex-grow: 1; /* Allow body to fill vertical space */
+    display: flex;
+    flex-direction: column;
   }
 
-  .certificate-body h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
+  .certificate-label {
+    /* Target h3 */
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem; /* Adjusted margin */
     color: var(--text-color);
+    line-height: 1.4;
   }
 
-  .certificate-body .date-range {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-bottom: 0.5rem;
+  .date-range {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    opacity: 0.8;
+    margin-bottom: 0.75rem;
   }
 
-  .certificate-body p {
-    font-size: 1rem;
-    color: var(--text-color);
+  .certificate-description {
+    /* Target main p */
+    font-size: 0.95rem;
+    color: var(--text-light);
+    line-height: 1.6;
+    opacity: 0.9;
+    flex-grow: 1; /* Push content up */
+    margin-bottom: 0; /* Remove default bottom margin */
   }
 
   @media (max-width: 768px) {
+    .certificates-section {
+      padding: 4rem 1rem;
+    }
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 3rem;
+    }
+    .certificates-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .certificate-card {
+      border-radius: 10px; /* Slightly less rounded */
+    }
+    .certificate-header {
+      height: 150px; /* Adjust image height */
+    }
+    .certificate-body {
+      padding: 1.2rem;
+    }
+    .certificate-label {
+      font-size: 1.1rem;
+    }
+    .certificate-description {
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 480px) {
     .certificates-grid {
       grid-template-columns: 1fr;
     }
+    .certificate-header {
+      height: 130px;
+    }
   }
 </style>
+
+<script is:inline>
+  function setupCertificateAnimations() {
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px 0px -10% 0px",
+      threshold: 0.1,
+    };
+    const handleIntersection = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+    const observer = new IntersectionObserver(
+      handleIntersection,
+      observerOptions
+    );
+    const targets = document.querySelectorAll(
+      ".certificate-card:not(.is-visible)"
+    );
+    if (targets.length > 0) {
+      targets.forEach((target) => observer.observe(target));
+    } else {
+      document
+        .querySelectorAll(".certificate-card")
+        .forEach((card) => card.classList.add("is-visible"));
+    }
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupCertificateAnimations);
+  } else {
+    setTimeout(setupCertificateAnimations, 0);
+  }
+</script>

@@ -201,53 +201,69 @@ export type Award = {
 
 export const awards: Award[] = [
   {
+    title: "Paper Publication IEEE - ESIC 2025 - KITT",
+    image: {
+      src: "/kiiit.webp",
+      alt: "Kalinga Insitute of Industrial Technology",
+    },
+    dates: "01/2025",
+    venue: "Kalinga Insitute of Industrial Technology, Bhubaneshwar",
+    description:
+      "Published a paper on Image Compression based on Deep learning, Compressive Sensing, Chaotic Maps.",
+  },
+  {
     title: "Paper Publication IEEE - INCIP 2025 - MIT Benagluru",
     image: {
       src: "/Mahe.webp",
-      alt: "Manipal Insitute of Technology"
+      alt: "Manipal Insitute of Technology",
     },
     dates: "01/2025",
     venue: "Manipal Insitute of Technology, Bengalore",
-    description: "Published a paper on Application for Medical Diagnosis powered by Neural Network."
+    description:
+      "Published a paper on Application for Medical Diagnosis powered by Neural Network.",
   },
   {
     title: "1st place - Qrack-It - Kriya 23",
     image: {
       src: "/PSG_College.webp",
-      alt: "PSG College of Technology"
+      alt: "PSG College of Technology",
     },
     dates: "03/2023",
     venue: "PSG College of Technology, Coimbatore",
-    description: "A 24-hour Hackathon, consisting of one round of website building and a presentation. Won first place in the competition."
+    description:
+      "A 24-hour Hackathon, consisting of one round of website building and a presentation. Won first place in the competition.",
   },
   {
     title: "2nd Place - CodeAstra 22",
     image: {
       src: "/amrita.webp",
-      alt: "Amrita Vishwa Vidyapeetham"
+      alt: "Amrita Vishwa Vidyapeetham",
     },
     dates: "08/2022",
     venue: "Amrita Vishwa Vidyapeetham, Chennai",
-    description: "College-wide competitive coding competition consisting of one round of coding with LeetCode-style problems. Secured 2nd place."
+    description:
+      "College-wide competitive coding competition consisting of one round of coding with LeetCode-style problems. Secured 2nd place.",
   },
   {
     title: "1st Place - CodeInfo - 20",
     image: {
       src: "/Kumaraguru_College.webp",
-      alt: "Kumaraguru College of Technology"
+      alt: "Kumaraguru College of Technology",
     },
     dates: "02/2020",
     venue: "Kumaraguru College of Technology, Coimbatore",
-    description: "A coding competition for school students, consisting of three rounds of coding and an interview. Aced the competition and won first place, the only place secured by my school."
+    description:
+      "A coding competition for school students, consisting of three rounds of coding and an interview. Aced the competition and won first place, the only place secured by my school.",
   },
   {
     title: "Subject Topper - Computer Science",
     image: {
       src: "/Stanes-school.webp",
-      alt: "Stanes School ICSE/ISC"
+      alt: "Stanes School ICSE/ISC",
     },
     dates: "08/2019",
     venue: "Stanes School ICSE/ISC, Coimbatore",
-    description: "Academic distinction for scoring full marks in the Computer Science paper. Recognized in front of the entire school."
-  }
+    description:
+      "Academic distinction for scoring full marks in the Computer Science paper. Recognized in front of the entire school.",
+  },
 ];

@@ -1,8 +1,9 @@
 ---
-import { awards } from '../consts';
-import type { Award } from '../consts';
+import { awards } from "../consts";
+import type { Award } from "../consts";
 
 const validatedAwards: Award[] = awards;
+const placeholderAwardImage = "/images/placeholder-award.png"; // Ensure this placeholder exists
 ---
 
 <section id="awards" class="awards-section">
@@ -10,26 +11,33 @@ const validatedAwards: Award[] = awards;
     <h2 class="section-title">My Awards 🏆 & Publications 📢</h2>
     <div class="awards-grid">
       {
-        validatedAwards.map(({ title, image, dates, venue, description }) => (
-          <div class="award-card fadediv">
-            <div class="award-header">
-              <img
-                src={image.src}
-                alt={image.alt || title}
-                class="award-image"
-                loading="lazy"
-              />
+        validatedAwards.map(
+          ({ title, image, dates, venue, description }, index) => (
+            <div class="award-card fadediv" style={`--card-index: ${index};`}>
+              {/* Image Header */}
+              <div class="award-header">
+                <img
+                  src={image?.src || placeholderAwardImage}
+                  alt={image?.alt || title}
+                  class="award-image"
+                  loading="lazy"
+                  width="400"
+                  {
+                  /* Provide aspect hint */ }
+                  height="200"
+                  onerror={`this.onerror=null; this.src='${placeholderAwardImage}';`}
+                />
+              </div>
+              {/* Content Body */}
+              <div class="award-body">
+                <h3 class="award-title">{title}</h3>
+                {dates && <p class="award-date">Date: {dates}</p>}
+                {venue && <p class="award-venue">Venue: {venue}</p>}
+                {description && <p class="award-description">{description}</p>}
+              </div>
             </div>
-            <div class="award-body">
-              <h3>{title}</h3>
-              <p class="award-date">{dates}</p>
-              <p class="award-venue">
-                <strong>Venue:</strong> {venue}
-              </p>
-              <p>{description}</p>
-            </div>
-          </div>
-        ))
+          )
+        )
       }
     </div>
   </div>
@@ -42,87 +50,214 @@ const validatedAwards: Award[] = awards;
     align-items: center;
     flex-direction: column;
     color: var(--text-color);
-    padding: 4rem 2rem;
+    padding: 5rem 1rem; /* Consistent padding */
+    background-color: var(--bg-color);
   }
 
   .awards-container {
-    width: 100%;
-    max-width: 1000px;
+    width: 90%;
+    max-width: 1100px; /* Consistent max-width */
     text-align: center;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+    margin-bottom: 4rem;
+    font-weight: 600;
+    color: var(--text-color);
   }
 
   .awards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+    gap: 2.5rem; /* Consistent gap */
+    width: 100%;
   }
 
   .award-card {
     display: flex;
-    flex-direction: column;
-    background: var(--bg-muted);
-    backdrop-filter: blur(12px);
+    flex-direction: column; /* Stack header and body */
+    background-color: var(--bg-muted);
     border-radius: 12px;
+    border: 1px solid var(--bg-muted);
+    box-shadow: var(--nav-shadow);
     overflow: hidden;
-    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
     transition:
-      transform 0.3s ease-in-out,
-      box-shadow 0.3s ease;
+      transform 0.3s ease,
+      box-shadow 0.3s ease,
+      border-color 0.3s ease;
+    outline: none;
+    text-align: left; /* Align text left in card */
+    /* Animation base */
+    opacity: 0;
+    transform: translateY(15px);
   }
 
   .award-card:hover {
-    transform: scale(1.05);
-    box-shadow: var(--nav-shadow);
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Enhance shadow */
+    border-color: var(--clr-2); /* Use theme accent */
+  }
+
+  .award-card:focus-visible {
+    /* Focus state */
+    border-color: var(--clr-2);
+    box-shadow:
+      0 0 0 3px var(--bg-color),
+      0 0 0 5px var(--clr-2);
+    transform: translateY(-2px) scale(1.005);
+  }
+
+  .award-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 0.5s ease-out,
+      transform 0.5s ease-out,
+      box-shadow 0.3s ease,
+      border-color 0.3s ease;
+    transition-delay: calc(var(--card-index, 0) * 70ms);
   }
 
   .award-header {
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 180px; /* Consistent height with other cards */
     overflow: hidden;
+    position: relative;
+    background-color: var(--bg-muted); /* Placeholder bg */
   }
 
   .award-image {
-    width: auto;
-    height: 100px;
-    border-radius: 8px;
-    object-fit: cover;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 1rem;
+    box-sizing: border-box; /* Include padding in dimensions */
+    transition: transform 0.4s ease;
+  }
+
+  .award-card:hover .award-image {
+    transform: scale(1.05);
   }
 
   .award-body {
+    padding: 1.5rem;
     text-align: left;
-    padding-top: 1rem;
+    flex-grow: 1; /* Fill available space */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .award-title {
+    /* Target h3 */
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
     color: var(--text-color);
+    line-height: 1.4;
   }
 
-  .award-body h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    color: var(--text-color);
+  .award-date,
+  .award-venue {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    opacity: 0.8;
+    margin-bottom: 0.25rem; /* Less space between meta info */
+    line-height: 1.5;
   }
 
-  .award-body .award-date {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-bottom: 0.5rem;
+  .award-venue strong {
+    /* Optional: Slightly stronger weight */
+    font-weight: 500;
+    opacity: 0.9;
   }
 
-  .award-body .award-venue {
-    font-size: 1rem;
-    color: var(--text-muted);
-    margin-bottom: 0.5rem;
-  }
-
-  .award-body p {
-    font-size: 1rem;
-    color: var(--text-color);
+  .award-description {
+    /* Target main p */
+    font-size: 0.95rem;
+    color: var(--text-light);
+    line-height: 1.6;
+    opacity: 0.9;
+    flex-grow: 1; /* Push description up if short */
+    margin-top: 0.75rem; /* Space above description */
+    margin-bottom: 0;
   }
 
   @media (max-width: 768px) {
+    .awards-section {
+      padding: 4rem 1rem;
+    }
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 3rem;
+    }
+    .awards-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .award-card {
+      border-radius: 10px;
+    }
+    .award-header {
+      height: 150px;
+    }
+    .award-body {
+      padding: 1.2rem;
+    }
+    .award-title {
+      font-size: 1.1rem;
+    }
+    .award-description {
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 480px) {
     .awards-grid {
       grid-template-columns: 1fr;
     }
+    .award-header {
+      height: 130px;
+    }
   }
 </style>
+
+<script is:inline>
+  // Re-use the same animation logic
+  function setupAwardAnimations() {
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px 0px -10% 0px",
+      threshold: 0.1,
+    };
+    const handleIntersection = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+    const observer = new IntersectionObserver(
+      handleIntersection,
+      observerOptions
+    );
+    const targets = document.querySelectorAll(".award-card:not(.is-visible)");
+    if (targets.length > 0) {
+      targets.forEach((target) => observer.observe(target));
+    } else {
+      document
+        .querySelectorAll(".award-card")
+        .forEach((card) => card.classList.add("is-visible"));
+    }
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupAwardAnimations);
+  } else {
+    setTimeout(setupAwardAnimations, 0);
+  }
+</script>

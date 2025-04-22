@@ -1,34 +1,49 @@
 ---
-import { Name } from '../consts';
-import { Image } from 'astro:assets';
+import { Name } from "../consts";
+import { Image } from "astro:assets";
 ---
 
 <section id="about" class="about-section">
-  <div class="about-container">
+  <div class="about-container animate-on-scroll">
     <div class="about-image">
-      <Image height={200} width={200} src="/tarun.webp" alt="{Name}" class="profile-pic spinner" />
+      <div class="profile-pic-wrapper">
+        <Image
+          height={200}
+          width={200}
+          src="/tarun.webp"
+          alt={`Profile picture of ${Name}`}
+          class="profile-pic"
+          loading="lazy"
+        />
+      </div>
     </div>
     <div class="about-content">
+      <h2 class="about-title">About Me</h2>
       <p>
-        Hey there!😃 I'm {Name}, final year student🎓 @ Amrita Vishwa
-        Vidhyapeetham Chennai 🏫.
+        Hey there!😃 I'm <strong>{Name}</strong>, final year student🎓 @ Amrita
+        Vishwa Vidhyapeetham Chennai 🏫.
       </p>
       <p>
-        I am a passionate developer who loves to build web applications and
-        explore new technologies. I have experience in building full-stack web
+        I am a passionate developer who loves building web applications and
+        exploring new technologies. I have experience in building full-stack web
         applications 🌐 and deep learning based projects 🤖.
       </p>
       <p>
-        I am also the Ex-President of <a href="https://cognizance-amrita.in/">Cognizance Amrita</a>. A tech club that
-        focuses on building a community of developers and tech enthusiasts. I
-        have organized various workshops, hackathons, and tech talks to help
-        students learn and grow.
+        I am also the Ex-President of <a
+          href="https://cognizance-amrita.in/"
+          target="_blank"
+          rel="noopener noreferrer">Cognizance Amrita</a
+        >, a tech club focused on building a community of developers and tech
+        enthusiasts. I have organized various workshops, hackathons, and tech
+        talks to help students learn and grow.
       </p>
       <p>
         Beyond coding, I love reading books📕, exploring new tech trends📈,
-        sharing knowledge, and working on innovative side projects."
+        sharing knowledge, and working on innovative side projects.
       </p>
-      <a href="/projects" class="btn">View My Work</a>
+      <div class="about-cta">
+        <a href="/projects" class="btn">View My Work</a>
+      </div>
     </div>
   </div>
 </section>
@@ -38,66 +53,219 @@ import { Image } from 'astro:assets';
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 4rem 2rem;
+    padding: 5rem 1rem;
+    background-color: var(--bg-color);
   }
 
   .about-container {
     display: flex;
     align-items: center;
     gap: 3rem;
+    width: 90%;
     max-width: 1000px;
-    padding: 2rem;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
+    background-color: var(--bg-muted);
+    border-radius: 16px;
+    border: 1px solid rgba(var(--text-color-rgb, 0, 0, 0), 0.05);
+    box-shadow: var(--nav-shadow);
+    transition: border-color 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .about-container:hover {
+    border-color: var(--text-light);
+  }
+
+  .about-container.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out,
+      border-color 0.3s ease;
   }
 
   .about-image {
-    flex: 1;
+    flex-shrink: 0;
     display: flex;
     justify-content: center;
+    align-items: center;
+  }
+
+  .profile-pic-wrapper {
+    border-radius: 50%;
+    padding: 5px;
+    box-shadow: 0 4px 15px rgba(var(--text-color-rgb, 0, 0, 0), 0.1);
   }
 
   .profile-pic {
+    display: block;
     width: 200px;
     height: 200px;
     border-radius: 50%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      filter 0.3s ease;
   }
 
-  .profile-pic:hover {
+  .profile-pic-wrapper:hover .profile-pic {
     transform: scale(1.05);
+    filter: brightness(1.05);
   }
 
   .about-content {
-    flex: 2;
+    flex: 1;
     text-align: left;
   }
 
-  .about-content h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    color: var(--highlight-text);
+  .about-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+  }
+
+  .about-title::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: var(--text-light);
+    border-radius: 1.5px;
   }
 
   .about-content p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: var(--text-color);
-    margin-bottom: 1rem;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-light);
+    margin-bottom: 1.2rem;
+  }
+
+  .about-content p:last-of-type {
+    margin-bottom: 2rem;
+  }
+
+  .about-content a:not(.btn) {
+    color: var(--clr-2);
+    font-weight: 500;
+    text-decoration: none;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1.5px;
+    transition: background-size 0.3s ease;
+  }
+
+  .about-content a:not(.btn):hover,
+  .about-content a:not(.btn):focus-visible {
+    background-size: 100% 1.5px;
+    outline: none;
+  }
+
+  .about-cta {
+    margin-top: 1rem;
+  }
+
+  .about-cta .btn {
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .about-cta .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .about-cta .btn:focus-visible {
+    outline: none;
   }
 
   @media (max-width: 768px) {
+    .about-section {
+      padding: 4rem 1rem;
+    }
     .about-container {
       flex-direction: column;
       text-align: center;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .about-image {
+      margin-bottom: 0;
     }
 
     .profile-pic {
       width: 150px;
       height: 150px;
     }
+
+    .about-title {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .about-title::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .about-content {
+      text-align: center;
+    }
+
+    .about-content p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .about-content p:last-of-type {
+      margin-bottom: 1.5rem;
+    }
+
+    .about-cta {
+      margin-top: 0.5rem;
+    }
   }
 </style>
+
+<script is:inline>
+  function setupAboutAnimation() {
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px 0px -15% 0px",
+      threshold: 0.1,
+    };
+
+    const handleIntersection = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      handleIntersection,
+      observerOptions
+    );
+    const target = document.querySelector(".about-container.animate-on-scroll");
+
+    if (target) {
+      observer.observe(target);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupAboutAnimation);
+  } else {
+    setTimeout(setupAboutAnimation, 0);
+  }
+</script>

@@ -1,32 +1,49 @@
 ---
-import { experience } from '../consts';
+import { experience } from "../consts";
 ---
 
 <section id="experience" class="experience">
   <div class="experience-container">
     <h3 class="section-title">Experience 🚀</h3>
-    <div class="experience-grid">
+    <div class="timeline" data-testid="timeline">
       {
-        experience.map(({ company, role, duration, description, logo }) => (
-          <div class="experience-card fadediv">
-            <div class="experience-header">
-              <div class="exp-img">
-                <img src={logo} alt={company} class="experience-logo" />
+        Array.isArray(experience) && experience.length > 0 ? (
+          experience.map(
+            ({ company, role, duration, description, logo }, index) => (
+              <div class="timeline-item animate-on-scroll" data-index={index}>
+                <div class="timeline-content">
+                  <div class="timeline-header">
+                    <img
+                      src={logo}
+                      alt={`${company} logo`}
+                      class="timeline-logo"
+                      loading="lazy"
+                    />
+                    <div class="timeline-info">
+                      <span class="timeline-duration">📅 {duration}</span>
+                      <h4 class="timeline-company">{company}</h4>
+                      <small class="timeline-role">{role}</small>
+                    </div>
+                  </div>
+                  <div class="timeline-body">
+                    <div class="description-content is-collapsed">
+                      <p set:html={description} />
+                    </div>
+                    {description && description.length > 150 && (
+                      <button type="button" class="toggle-button">
+                        Read More
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
-              <div>
-                <p>📅 {duration}</p>
-                <h3>
-                  {company}
-                  <br />
-                  <small>{role}</small>
-                </h3>
-              </div>
-            </div>
-            <div class="experience-body">
-              <p>{description}</p>
-            </div>
-          </div>
-        ))
+            )
+          )
+        ) : (
+          <p style="text-align: center; color: var(--text-light);">
+            No experience data available.
+          </p>
+        )
       }
     </div>
   </div>
@@ -34,79 +51,577 @@ import { experience } from '../consts';
 
 <style>
   .experience {
-    padding: 4rem 2rem;
-    text-align: center;
+    padding: 6rem 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    overflow-x: hidden;
+    font-family: "Raleway", sans-serif;
   }
 
   .experience-container {
-    width: 70dvw;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
   }
+
   .section-title {
-    font-size: 2rem;
-    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    margin-bottom: 5rem;
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-color);
   }
 
-  .experience-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: space-evenly;
+  .timeline {
+    position: relative;
+    width: 100%;
+    padding: 1rem 0;
+    margin: 0 auto;
+    --timeline-progress: 0;
   }
 
-  .exp-img {
+  .timeline::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background-color: var(--bg-muted);
+    border-radius: 2px;
+    z-index: 0;
+  }
+
+  .timeline::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: calc(100% * var(--timeline-progress));
+    background-color: var(--clr-2);
+    border-radius: 2px;
+    z-index: 0;
+    transition: height 0.1s linear;
+  }
+
+  .timeline-item {
+    position: relative;
+    width: 50%;
+    box-sizing: border-box;
+    margin-bottom: 60px;
+    padding: 15px 40px;
+    opacity: 0;
+    z-index: 1;
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+
+  .timeline-item:nth-child(odd) {
+    left: 0;
+    padding-right: 30px;
+    text-align: right;
+    transform: translateX(-40px);
+  }
+
+  .timeline-item:nth-child(even) {
+    left: 50%;
+    padding-left: 30px;
+    text-align: left;
+    transform: translateX(40px);
+  }
+
+  .timeline-item.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .timeline-dot {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background-color: var(--clr-2);
+    border: 4px solid var(--bg-color);
+    top: 45px;
+    border-radius: 50%;
+    z-index: 2;
+    transition: transform 0.3s ease-out;
+  }
+
+  .timeline-item:nth-child(odd) {
+    --dot-translate: 50%;
+  }
+
+  .timeline-item:nth-child(even) {
+    --dot-translate: -50%;
+  }
+
+  .timeline-item:hover .timeline-dot {
+    transform: translateX(var(--dot-translate)) scale(1.25);
+  }
+
+  .timeline-content {
+    position: relative;
+    padding: 30px 35px;
+    background-color: var(--bg-muted);
+    border-radius: 8px;
+    border: 1px solid transparent;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.07);
+    transition:
+      border-color 0.3s ease,
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .timeline-item:hover .timeline-content {
+    border-color: var(--clr-2);
+    transform: translateY(-6px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .timeline-content::before {
+    content: "";
+    position: absolute;
+    top: 48px;
+    width: 0;
+    height: 0;
+    border: 14px solid transparent;
+    z-index: 1;
+  }
+
+  .timeline-item:nth-child(odd) .timeline-content::before {
+    right: -28px;
+    border-left-color: var(--bg-muted);
+    border-right-width: 0;
+    transition: border-left-color 0.3s ease;
+  }
+
+  .timeline-item:nth-child(odd):hover .timeline-content::before {
+    border-left-color: var(--clr-2);
+  }
+
+  .timeline-item:nth-child(even) .timeline-content::before {
+    left: -28px;
+    border-right-color: var(--bg-muted);
+    border-left-width: 0;
+    transition: border-right-color 0.3s ease;
+  }
+
+  .timeline-item:nth-child(even):hover .timeline-content::before {
+    border-right-color: var(--clr-2);
+  }
+
+  .timeline-header {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
+    margin-bottom: 18px;
+    gap: 18px;
   }
 
-  .experience-card {
-    background-color: var(--bg-color);
-    border-radius: 5px;
-    max-width: 370px;
-    flex: 1 1 370px; /* Ensure cards have a minimum width of 380px and grow if space allows */
-    margin: 0.5rem;
-    transition: all 0.3s ease;
-    border: 3px solid var(--bg-muted);
+  .timeline-item:nth-child(odd) .timeline-header {
+    flex-direction: row-reverse;
   }
 
-  .experience-card:hover {
-    box-shadow: var(--nav-shadow);
-  }
-
-  .experience-header {
-    display: flex;
-    background-color: var(--bg-muted);
-    border-radius: 5px;
-    padding: 10px;
-    gap: 10px;
-    justify-content: center;
-  }
-
-  .experience-logo {
-    width: 90px;
-    height: 90px;
+  .timeline-logo {
+    width: 75px;
+    height: 75px;
     object-fit: contain;
+    border-radius: 50%;
+    background-color: rgba(var(--text-color-rgb, 255, 255, 255), 0.05);
+    padding: 6px;
+    flex-shrink: 0;
+    border: 1px solid var(--bg-muted);
   }
 
-  .experience-body {
-    padding: 0.6rem 1rem;
-    background-color: var();
+  :root {
+    --text-color-rgb: 250, 250, 250;
   }
 
-  .experience-footer {
+  html.light {
+    --text-color-rgb: 18, 19, 19;
+  }
+
+  .timeline-info {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    flex-grow: 1;
   }
 
-  @media only screen and (max-width: 700px) {
+  .timeline-item:nth-child(odd) .timeline-info {
+    align-items: flex-end;
+  }
+
+  .timeline-item:nth-child(even) .timeline-info {
+    align-items: flex-start;
+  }
+
+  .timeline-duration {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-bottom: 8px;
+    display: block;
+    opacity: 0.8;
+  }
+
+  .timeline-company {
+    margin: 0;
+    font-size: 1.45rem;
+    font-weight: 600;
+    color: var(--text-color);
+    line-height: 1.25;
+  }
+
+  .timeline-role {
+    font-size: 1.05rem;
+    color: var(--text-light);
+    font-style: normal;
+    opacity: 0.9;
+  }
+
+  .timeline-body {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-color);
+    opacity: 0.95;
+    position: relative;
+  }
+
+  .description-content {
+    transition: max-height 0.5s ease-in-out;
+    overflow: hidden;
+    text-align: justify;
+  }
+
+  .description-content.is-collapsed {
+    max-height: 5.1em;
+    position: relative;
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+
+  .description-content p {
+    margin: 0 0 1em 0;
+    text-align: justify;
+  }
+
+  .description-content p:last-child {
+    margin-bottom: 0;
+    text-align: justify;
+  }
+
+  .description-content.is-collapsed p {
+    margin-bottom: 0;
+    text-align: justify;
+  }
+
+  .toggle-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--clr-2);
+    background-color: transparent;
+    border: 1px solid var(--clr-2);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    opacity: 0.8;
+  }
+
+  .toggle-button:hover {
+    background-color: rgba(var(--clr-2-rgb, 88, 101, 242), 0.1);
+    opacity: 1;
+  }
+
+  @media only screen and (max-width: 768px) {
     .experience {
-      margin-top: 60px;
+      padding: 4rem 0.5rem;
+    }
+
+    .timeline::before,
+    .timeline::after {
+      left: 30px;
+      transform: translateX(0);
+    }
+
+    .timeline-item {
+      width: 100%;
+      left: 0 !important;
+      padding-left: 65px;
+      padding-right: 15px;
+      margin-bottom: 40px;
+      text-align: left !important;
+      transform: translateX(-30px) !important;
+      opacity: 0 !important;
+    }
+
+    .timeline-item:nth-child(odd),
+    .timeline-item:nth-child(even) {
+      transform: translateX(-30px) !important;
+      opacity: 0 !important;
+      left: 0 !important;
+      text-align: left !important;
+    }
+
+    .timeline-item.is-visible {
+      opacity: 1 !important;
+      transform: translateX(0) !important;
+    }
+
+    .timeline-dot {
+      left: 30px !important;
+      right: auto !important;
+      transform: translateX(-50%) !important;
+      top: 35px !important;
+      --dot-translate: -50% !important;
+    }
+
+    .timeline-item:hover .timeline-dot {
+      transform: translateX(-50%) scale(1.25) !important;
+    }
+
+    .timeline-content::before {
+      left: -20px !important;
+      right: auto !important;
+      border-right-color: var(--bg-muted) !important;
+      border-left-width: 0 !important;
+      border-left-color: transparent !important;
+      border-right-width: 14px !important;
+      top: 38px !important;
+      transition: border-right-color 0.3s ease !important;
+    }
+
+    .timeline-item:hover .timeline-content::before {
+      border-right-color: var(--clr-2) !important;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-header {
+      flex-direction: row !important;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-info {
+      align-items: flex-start !important;
+    }
+
+    .timeline-company {
+      font-size: 1.3rem;
+    }
+
+    .timeline-logo {
+      width: 60px;
+      height: 60px;
+    }
+
+    .timeline-dot {
+      top: 35px;
+    }
+
+    .timeline-content::before {
+      top: 38px;
+    }
+
+    .description-content.is-collapsed {
+      max-height: 6.8em;
     }
   }
 </style>
+
+<script is:inline>
+  // --- Helper: Throttle Function ---
+  function throttle(func, limit) {
+    let inThrottle;
+    return function () {
+      const args = arguments;
+      const context = this;
+      if (!inThrottle) {
+        func.apply(context, args);
+        inThrottle = true;
+        setTimeout(() => (inThrottle = false), limit);
+      }
+    };
+  }
+
+  // --- Main Setup Function ---
+  function setupExperienceSection() {
+    console.log(" deney"); // Debug log
+
+    // --- 1. Intersection Observer for Entry Animation ---
+    const observerOptions = {
+      root: null, // viewport
+      rootMargin: "0px 0px -10% 0px", // Trigger when item is 10% from bottom edge
+      threshold: 0.05, // Trigger when 5% of the item is visible
+    };
+
+    const handleIntersection = (entries, observer) => {
+      entries.forEach((entry) => {
+        // console.log("Intersection:", entry.target, entry.isIntersecting); // Detailed log
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          // Optional: Stop observing after animation to save resources
+          observer.unobserve(entry.target);
+          console.log("Observed and made visible:", entry.target); // Debug log
+        }
+        // Note: No 'else' clause to remove class, element stays visible once seen
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      handleIntersection,
+      observerOptions
+    );
+    const targets = document.querySelectorAll(".animate-on-scroll");
+
+    if (targets.length > 0) {
+      targets.forEach((target) => observer.observe(target));
+      // console.log(`Observing ${targets.length} timeline items.`);
+    } else {
+      console.warn(
+        "Experience Section: No items found with .animate-on-scroll class."
+      );
+    }
+
+    // --- 2. Read More / Read Less Functionality ---
+    const timelineContainer = document.querySelector(
+      '[data-testid="timeline"]'
+    );
+    if (timelineContainer) {
+      timelineContainer.addEventListener("click", (event) => {
+        if (event.target.classList.contains("toggle-button")) {
+          const button = event.target;
+          const contentWrapper = button.closest(".timeline-body"); // Find parent body
+          if (!contentWrapper) return;
+
+          const content = contentWrapper.querySelector(".description-content");
+          if (!content) return;
+
+          const isCollapsed = content.classList.contains("is-collapsed");
+
+          if (isCollapsed) {
+            // Expand: Set max-height to fit content
+            // Needs to happen *before* removing class for transition
+            content.style.maxHeight = content.scrollHeight + "px";
+            content.classList.remove("is-collapsed");
+            button.textContent = "Read Less";
+
+            // Optional: Reset max-height after transition for flexibility
+            content.addEventListener(
+              "transitionend",
+              () => {
+                // Check if still expanded before removing height
+                if (!content.classList.contains("is-collapsed")) {
+                  content.style.maxHeight = null; // Use 'null' to revert to CSS rule
+                }
+              },
+              { once: true }
+            );
+          } else {
+            // Collapse: Set max-height back based on CSS computed style or explicit value
+            // Needs explicit height *before* adding class for transition out
+            const collapsedHeight =
+              getComputedStyle(content).getPropertyValue(
+                "--collapsed-height"
+              ) || "5.1em"; // Get from CSS or fallback
+            content.style.maxHeight = content.scrollHeight + "px"; // Ensure it's currently full height
+            requestAnimationFrame(() => {
+              // Allow repaint
+              content.style.maxHeight = collapsedHeight; // Set target collapsed height
+              content.classList.add("is-collapsed");
+              button.textContent = "Read More";
+            });
+          }
+        }
+      });
+
+      // Initialize collapsed heights correctly (using CSS value ideally)
+      document
+        .querySelectorAll(".description-content.is-collapsed")
+        .forEach((content) => {
+          // Set a CSS variable for the collapsed height for easier access in JS/CSS
+          // Example: In CSS: .description-content.is-collapsed { --collapsed-height: 5.1em; max-height: var(--collapsed-height); }
+          const collapsedHeight = getComputedStyle(content).maxHeight;
+          // If it's not already set by CSS (e.g. 'none'), apply the default
+          if (collapsedHeight === "none" || collapsedHeight === "0px") {
+            content.style.maxHeight = "5.1em"; // Fallback if CSS var isn't used
+          }
+          // Ensure initial state has the explicit max-height for transition start
+          content.style.maxHeight = getComputedStyle(content).maxHeight;
+        });
+    } else {
+      console.warn(
+        "Experience Section: Timeline container [data-testid='timeline'] not found for Read More."
+      );
+    }
+
+    // --- 3. Timeline Scroll Progress Indicator ---
+    const timelineEl = document.querySelector('[data-testid="timeline"]');
+    if (timelineEl) {
+      const updateTimelineProgress = () => {
+        const rect = timelineEl.getBoundingClientRect();
+        const timelineHeight = timelineEl.offsetHeight;
+        const windowHeight = window.innerHeight;
+
+        // Calculate progress based on visible portion relative to viewport
+        // Start filling when top enters 85% from top of viewport
+        // Finish filling when bottom leaves 15% from top of viewport
+        const startTrigger = windowHeight * 0.85;
+        const endTrigger = windowHeight * 0.15;
+
+        const scrollStart = rect.top - startTrigger; // How far top is from start trigger point
+        const scrollEnd = rect.bottom - endTrigger; // How far bottom is from end trigger point
+
+        // Total scroll distance over which the timeline should fill
+        const scrollRange = timelineHeight + (startTrigger - endTrigger);
+
+        let progress = 0;
+        if (scrollRange > 0) {
+          // How far we are into the active scroll range
+          const currentScrollDistance = -scrollStart;
+          progress = Math.max(
+            0,
+            Math.min(1, currentScrollDistance / scrollRange)
+          );
+        } else if (rect.bottom < endTrigger) {
+          // If the whole element is above the end trigger, it's fully progressed
+          progress = 1;
+        } // else if (rect.top > startTrigger) { progress = 0; } // Implicitly 0 initially
+
+        timelineEl.style.setProperty(
+          "--timeline-progress",
+          progress.toFixed(3)
+        );
+      };
+
+      // Throttle updates for performance
+      const throttledUpdate = throttle(updateTimelineProgress, 50); // Update max ~20fps
+
+      window.addEventListener("scroll", throttledUpdate, { passive: true });
+      window.addEventListener("resize", throttledUpdate);
+
+      // Initial calculation after layout stabilizes
+      setTimeout(updateTimelineProgress, 150);
+    } else {
+      console.warn(
+        "Experience Section: Timeline element [data-testid='timeline'] not found for scroll progress."
+      );
+    }
+  }
+
+  // --- Run Setup on DOM Ready ---
+  function runSetup() {
+    // Ensure helper functions are defined or accessible here
+    setupExperienceSection();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", runSetup);
+  } else {
+    // DOM already loaded, run setup possibly after a microtask delay
+    setTimeout(runSetup, 0);
+  }
+</script>

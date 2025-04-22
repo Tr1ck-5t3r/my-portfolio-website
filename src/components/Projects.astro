@@ -1,5 +1,7 @@
 ---
-import { projectsHome as projects } from '../consts';
+import { projectsHome as projects } from "../consts";
+// Consider adding a placeholder image path if needed
+const placeholderImage = "/images/placeholder-project.png"; // Example path
 ---
 
 <section id="projects" class="projects">
@@ -7,77 +9,420 @@ import { projectsHome as projects } from '../consts';
     <h3 class="section-title">Check out my Projects 💻</h3>
     <div class="projects-grid">
       {
-        projects.map(({ title, description, link, image }) => (
-          <div class="project-card fadediv">
-            <div class="project-header">
-              <img src={image} alt={title} class="project-image" />
+        Array.isArray(projects) && projects.length > 0 ? (
+          projects.map(({ title, description, link, image }, index) => (
+            <div class="project-card fadediv" style={`--card-index: ${index};`}>
+              {" "}
+              {/* Set variable directly */}
+              <div class="project-header">
+                <a
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`View project: ${title}`}
+                  class="project-image-link"
+                >
+                  <img
+                    src={image || placeholderImage}
+                    alt={`title`}
+                    class="project-image"
+                    loading="lazy"
+                    width="400"
+                    height="250"
+                    onerror={`this.onerror=null; this.src='${placeholderImage}';`}
+                  />
+                  {/* Overlay appears on hover/focus */}
+                  <div class="project-image-overlay">
+                    {/* Optional: Add an icon here using SVG or an icon font */}
+                    {/* Example using simple text: <span class="overlay-icon">➔</span> */}
+                    <svg
+                      class="overlay-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      width="32"
+                      height="32"
+                    >
+                      <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                    </svg>
+                  </div>
+                </a>
+              </div>
+              <div class="project-body">
+                <h4 class="project-title">
+                  <a href={link} target="_blank" rel="noopener noreferrer">
+                    {title}
+                  </a>{" "}
+                  {/* Make title a link too */}
+                </h4>
+                <p class="project-description">{description}</p>
+              </div>
+              <div class="project-footer">
+                <a
+                  href={link}
+                  class="btn project-btn"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View Project
+                </a>
+              </div>
             </div>
-            <div class="project-body">
-              <h3>{title}</h3>
-              <p>{description}</p>
-            </div>
-            <div class="project-footer">
-              <a href={link} class="btn" target="_blank">
-                View Project
-              </a>
-            </div>
-          </div>
-        ))
+          ))
+        ) : (
+          <p style="text-align: center; color: var(--text-light); grid-column: 1 / -1;">
+            No projects to display yet.
+          </p>
+        )
       }
     </div>
-    <div class="project-footer">
-      <button class="btn view-more">
-        <a href="/projects">
-          View More Projects
-        </a>  
-      </button>
+    <div class="view-more-container">
+      <a href="/projects" class="btn view-more-btn"> View More Projects </a>
     </div>
   </div>
 </section>
 
 <style>
+  /* --- Base Project Section Styles (Keep As Is) --- */
   .projects {
-    padding: 4rem 2rem;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    padding: 5rem 1rem;
+    background-color: var(--bg-color);
   }
-
   .projects-container {
-    width: 70dvw;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
   }
   .section-title {
-    font-size: 2rem;
-    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    margin-bottom: 4rem;
+    font-weight: 600;
+    color: var(--text-color);
   }
-
   .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
     justify-content: center;
+    width: 100%;
   }
 
+  /* --- Enhanced Project Card --- */
+  .project-card {
+    background-color: var(--bg-secondary, var(--bg-muted));
+    border-radius: 10px;
+    font-family: "Raleway", sans-serif;
+    /* Subtle border, color variable needed */
+    border: 1px solid var(--border-color, transparent);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    /* Specific transitions */
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease,
+      border-color 0.3s ease;
+    /* Animation base */
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .project-card:hover {
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    /* Accent border on hover, needs --clr-accent or similar */
+    border-color: var(--clr-accent, var(--text-color));
+  }
+
+  /* Animation trigger class */
+  .project-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out,
+      border-color 0.3s ease; /* Include border-color if changing */
+    /* Stagger based on index set inline */
+    transition-delay: calc(
+      var(--card-index, 0) * 80ms
+    ); /* Slightly faster stagger */
+  }
+
+  /* --- Project Image & Overlay --- */
+  .project-header {
+    position: relative; /* Context for overlay */
+    /* Placeholder background color if image fails */
+    background-color: var(--bg-muted);
+    line-height: 0; /* Remove potential space below img */
+  }
+
+  .project-image-link {
+    display: block; /* Make link fill header */
+    position: relative; /* Context for overlay */
+    outline: none; /* Remove default outline */
+  }
+
+  .project-image {
+    display: block;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    /* Image stays, overlay/border show interaction */
+    transition: opacity 0.3s ease; /* Fade slightly under overlay? Optional */
+    border-bottom: 1px solid var(--border-color, transparent); /* Line below image */
+  }
+
+  .project-image-overlay {
+    position: absolute;
+    inset: 0; /* Cover the entire link area */
+    background-color: rgba(0, 0, 0, 0); /* Start transparent */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0; /* Hidden by default */
+    transition:
+      background-color 0.3s ease,
+      opacity 0.3s ease;
+    pointer-events: none; /* Allow clicks to go to the link */
+  }
+
+  .overlay-icon {
+    color: white;
+    opacity: 0.8;
+    transform: scale(0.8);
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
+  }
+
+  /* Show overlay on hover/focus-visible of the LINK */
+  .project-image-link:hover .project-image-overlay,
+  .project-image-link:focus-visible .project-image-overlay {
+    background-color: rgba(0, 0, 0, 0.5); /* Darken */
+    opacity: 1;
+  }
+
+  .project-image-link:hover .overlay-icon,
+  .project-image-link:focus-visible .overlay-icon {
+    transform: scale(1);
+    opacity: 1;
+  }
+  /* Optional: Slightly fade image when overlay is active */
+  .project-image-link:hover .project-image,
+  .project-image-link:focus-visible .project-image {
+    opacity: 0.85;
+  }
+
+  /* Focus state for the image link */
+  .project-image-link:focus-visible {
+    /* Use a visible outline or shadow that works with the overlay */
+    box-shadow: 0 0 0 3px var(--clr-focus-ring, var(--clr-accent, #4a90e2)); /* Example focus ring */
+  }
+
+  /* --- Project Body --- */
+  .project-body {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0 0 0.75rem 0;
+    line-height: 1.3;
+  }
+  /* Style title link */
+  .project-title a {
+    color: inherit; /* Use card text color */
+    text-decoration: none;
+    transition: color 0.2s ease;
+    outline: none;
+  }
+  .project-title a:hover,
+  .project-title a:focus-visible {
+    color: var(--clr-accent, var(--clr-2)); /* Highlight color */
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+  }
+  .project-title a:focus-visible {
+    border-radius: 2px; /* Apply focus ring to link */
+    box-shadow: 0 0 0 2px var(--clr-focus-ring, var(--clr-accent, #4a90e2));
+  }
+
+  .project-description {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    line-height: 1.6;
+    margin: 0;
+    flex-grow: 1;
+    opacity: 0.9; /* Slightly less emphasis */
+  }
+
+  /* --- Project Footer & Buttons --- */
   .project-footer {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    margin-top: 1rem;
+  }
+
+  /* Primary button style (within card) */
+  .btn.project-btn {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    background-color: var(--mesh-2);
+    color: var(--btn-text-color, white); /* Variable for button text */
+    border: 1px solid transparent;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      transform 0.1s ease,
+      box-shadow 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .btn.project-btn:hover {
+    background-color: var(--mesh-1,);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+  }
+  .btn.project-btn:active {
+    transform: translateY(0) scale(0.98); /* Click effect */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  .btn.project-btn:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 3px var(--bg-color),
+      0 0 0 5px var(--clr-focus-ring, var(--clr-accent));
+  }
+
+  /* --- "View More" Button & Container --- */
+  .view-more-container {
+    margin-top: 4rem; /* More space */
     padding: 1rem;
     text-align: center;
-    display: flex;
-    justify-content: center;
   }
 
-  .project-link {
+  /* Secondary/Outline button style */
+  .btn.view-more-btn {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    background-color: transparent;
+    background-color: var(--mesh-2);
+    color: var(--btn-text-color, white); /* Variable for button text */
+    border: 1px solid transparent;
+    border-radius: 6px;
     text-decoration: none;
-    color: var(--text-alt);
-    font-weight: bold;
-    font-size: 1.1rem;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      transform 0.1s ease,
+      box-shadow 0.2s ease;
   }
 
-  .project-link:hover {
-    text-decoration: underline;
+  .btn.view-more-btn:hover {
+    background-color: var(--text-color);
+    color: var(--text-alt);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
-  .view-more {
-    margin-top: 30px;
+  .btn.view-more-btn:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: none;
+  }
+  .btn.view-more-btn:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 3px var(--bg-color),
+      0 0 0 5px
+        var(--clr-focus-ring, var(--clr-secondary-accent, var(--clr-accent)));
+  }
+
+  /* --- Responsive (Keep As Is or Refine Further) --- */
+  @media (max-width: 768px) {
+    .projects {
+      padding: 4rem 1rem;
+    }
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 3rem;
+    }
+    .projects-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .project-image {
+      height: 180px;
+    }
+    .project-title {
+      font-size: 1.2rem;
+    }
+    .project-description {
+      font-size: 0.9rem;
+      opacity: 1;
+    } /* Restore opacity for mobile maybe */
+    .btn.project-btn {
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+    }
+    .btn.view-more-btn {
+      padding: 0.7rem 1.5rem;
+      font-size: 0.95rem;
+    }
+  }
+  @media (max-width: 480px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
+
+<script is:inline>
+  // Intersection Observer Script (Keep As Is - sets --card-index)
+  function setupProjectAnimations() {
+    // ... (Observer setup remains the same) ...
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px 0px -10% 0px",
+      threshold: 0.1,
+    };
+    const handleIntersection = (entries, observer) => {
+      /* ... adds is-visible, sets --card-index, unobserves ... */
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Get index from data-attribute or set directly in loop
+          // const index = entry.target.dataset.index || 0; // If using data-index
+          // entry.target.style.setProperty('--card-index', index);
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+    const observer = new IntersectionObserver(
+      handleIntersection,
+      observerOptions
+    );
+    const targets = document.querySelectorAll(".projects-grid .fadediv");
+    if (targets.length > 0) {
+      targets.forEach((target) => observer.observe(target));
+    } else {
+      console.warn("Projects Section: No .fadediv elements found.");
+    }
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupProjectAnimations);
+  } else {
+    setTimeout(setupProjectAnimations, 0);
+  }
+</script>
