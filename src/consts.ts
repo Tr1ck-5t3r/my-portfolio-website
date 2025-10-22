@@ -80,22 +80,28 @@ type ExperienceItem = {
 // Define the experience array type
 export const experience: ExperienceItem[] = [
   {
-    company: 'Prodigy InfoTech',
-    role: 'Machine Learning Intern',
-    duration: '05/05/2024 - 01/06/2024',
+    company: "Tredence",
+    role: "Data Analyst Associate",
+    duration: "14/07/2025 - present",
     description:
-      'Implemented various Machine Learning models and gained practical experience in the field of Artificial Intelligence. \
-      Worked on projects like Sentiment Analysis, Image Recognition, and Speech Recognition.',
-    logo: '/prodigy-infotech.webp',
+      "Collaborating with teams to analyze data, develop insights, and create data-driven solutions that drive business growth and efficiency.",
+    logo: "/tredence.webp",
   },
   {
-    company: 'NxWeb',
-    role: 'Intern',
-    duration: '02/12/2024 - 02/03/2025',
+    company: "Cognizance",
+    role: "Club Lead",
+    duration: "01/04/2023 - 01/09/2024",
     description:
-      'Understanding client requirements and developing personalized technology-driven solutions that help businesses achieve \
-     their goals through innovation and tailored approaches.',
-    logo: '/nxweb.webp',
+      "Leading a tech club to organize workshops, hackathons, and coding competitions, fostering a collaborative learning environment for students interested in technology and programming.",
+    logo: "/cognizance.webp",
+  },
+  {
+    company: "Cognizance",
+    role: "Mentor",
+    duration: "01/09/2022 - 01/04/2023",
+    description:
+      "Mentoring junior members and guiding them in their projects, fostering a culture of knowledge sharing and continuous learning.",
+    logo: "/cognizance.webp",
   },
   // Add more experience objects if needed
 ];
