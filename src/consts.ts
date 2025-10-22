@@ -80,12 +80,12 @@ type ExperienceItem = {
 // Define the experience array type
 export const experience: ExperienceItem[] = [
   {
-    company: "Tredence",
-    role: "Data Analyst Associate",
-    duration: "14/07/2025 - present",
+    company: "Cognizance",
+    role: "Mentor",
+    duration: "01/09/2022 - 01/04/2023",
     description:
-      "Collaborating with teams to analyze data, develop insights, and create data-driven solutions that drive business growth and efficiency.",
-    logo: "/tredence.webp",
+      "Mentoring junior members and guiding them in their projects, fostering a culture of knowledge sharing and continuous learning.",
+    logo: "/cognizance.webp",
   },
   {
     company: "Cognizance",
@@ -96,12 +96,12 @@ export const experience: ExperienceItem[] = [
     logo: "/cognizance.webp",
   },
   {
-    company: "Cognizance",
-    role: "Mentor",
-    duration: "01/09/2022 - 01/04/2023",
+    company: "Tredence",
+    role: "Data Analyst Associate",
+    duration: "14/07/2025 - present",
     description:
-      "Mentoring junior members and guiding them in their projects, fostering a culture of knowledge sharing and continuous learning.",
-    logo: "/cognizance.webp",
+      "Collaborating with teams to analyze data, develop insights, and create data-driven solutions that drive business growth and efficiency.",
+    logo: "/tredence.webp",
   },
   // Add more experience objects if needed
 ];

@@ -341,101 +341,111 @@ import { experience } from "../consts";
 
   @media only screen and (max-width: 768px) {
     .experience {
-      padding: 4rem 1rem;
+      padding: 4rem 0.5rem;
     }
 
-    /* Center timeline line */
     .timeline::before,
     .timeline::after {
-      left: 24px;
-      transform: none;
+      left: 30px !important;
+      transform: translateX(0) !important;
     }
 
-    /* Single column layout */
+    /* Make each timeline item use the same left-aligned layout */
     .timeline-item {
-      width: 100%;
-      left: 0;
-      margin-bottom: 40px;
-      padding-left: 70px;
-      padding-right: 15px;
-      text-align: left;
-      transform: translateX(0);
-      opacity: 0;
-      transition:
-        opacity 0.6s ease-out,
-        transform 0.6s ease-out;
+      width: 100% !important;
+      left: 0 !important;
+      padding-left: 70px !important; /* space for the vertical line + dot */
+      padding-right: 16px !important;
+      margin-bottom: 40px !important;
+      text-align: left !important;
+      transform: translateX(-20px) !important;
+      opacity: 0 !important;
+    }
+
+    /* Ensure both odd & even children use identical layout on mobile */
+    .timeline-item:nth-child(odd),
+    .timeline-item:nth-child(even) {
+      left: 0 !important;
+      transform: translateX(-20px) !important;
+      opacity: 0 !important;
+      text-align: left !important;
+      padding-left: 70px !important;
+      padding-right: 16px !important;
     }
 
     .timeline-item.is-visible {
-      opacity: 1;
-      transform: translateX(0);
+      opacity: 1 !important;
+      transform: translateX(0) !important;
     }
 
-    /* Adjust logo and info layout */
-    .timeline-header {
-      flex-direction: row !important;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .timeline-info {
-      align-items: flex-start !important;
-      text-align: left;
-    }
-
-    .timeline-logo {
-      width: 55px;
-      height: 55px;
-    }
-
-    /* Fix dot alignment */
+    /* Place the dot on the vertical line for all items */
     .timeline-dot {
-      left: 24px !important;
-      top: 40px !important;
-      transform: translateX(-50%) scale(1);
-      width: 16px;
-      height: 16px;
+      left: 30px !important;
+      right: auto !important;
+      transform: translateX(-50%) !important;
+      top: 35px !important;
+      --dot-translate: -50% !important;
     }
 
     .timeline-item:hover .timeline-dot {
-      transform: translateX(-50%) scale(1.25);
+      transform: translateX(-50%) scale(1.25) !important;
     }
 
-    /* Arrow pointing to the line */
+    /*
+      Position the little triangle so it points to the vertical line.
+      Using a consistent left offset ensures odd/even don't differ.
+    */
     .timeline-content::before {
-      content: "";
-      position: absolute;
-      left: -16px;
-      top: 40px;
-      border-width: 10px;
-      border-style: solid;
-      border-color: transparent var(--bg-muted) transparent transparent;
-      transition: border-right-color 0.3s ease;
+      left: 44px !important; /* aligns the triangle with the vertical line at 30px */
+      right: auto !important;
+      border-right-color: var(--bg-muted) !important;
+      border-left-width: 0 !important;
+      border-left-color: transparent !important;
+      border-right-width: 14px !important;
+      top: 38px !important;
+      transition: border-right-color 0.3s ease !important;
     }
 
     .timeline-item:hover .timeline-content::before {
-      border-right-color: var(--clr-2);
+      border-right-color: var(--clr-2) !important;
     }
 
-    /* Content box adjustments */
-    .timeline-content {
-      padding: 20px 25px;
-      background-color: var(--bg-muted);
-      border-radius: 8px;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+    /* Force header and info alignment the same for all items on small screens */
+    .timeline-item .timeline-header,
+    .timeline-item:nth-child(odd) .timeline-header,
+    .timeline-item:nth-child(even) .timeline-header {
+      flex-direction: row !important;
+      gap: 12px !important;
+      align-items: center !important;
+    }
+
+    .timeline-item .timeline-info,
+    .timeline-item:nth-child(odd) .timeline-info,
+    .timeline-item:nth-child(even) .timeline-info {
+      align-items: flex-start !important;
+    }
+
+    .timeline-logo {
+      margin-left: 0 !important;
+      margin-right: 12px !important;
+      width: 60px !important;
+      height: 60px !important;
     }
 
     .timeline-company {
-      font-size: 1.25rem;
+      font-size: 1.3rem;
     }
 
-    .timeline-role {
-      font-size: 0.95rem;
+    .timeline-dot {
+      top: 35px;
     }
 
-    /* Expand/collapse spacing */
+    .timeline-content::before {
+      top: 38px;
+    }
+
     .description-content.is-collapsed {
-      max-height: 6.5em;
+      max-height: 6.8em;
     }
   }
 </style>
