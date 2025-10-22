@@ -341,93 +341,101 @@ import { experience } from "../consts";
 
   @media only screen and (max-width: 768px) {
     .experience {
-      padding: 4rem 0.5rem;
+      padding: 4rem 1rem;
     }
 
+    /* Center timeline line */
     .timeline::before,
     .timeline::after {
-      left: 30px;
-      transform: translateX(0);
+      left: 24px;
+      transform: none;
     }
 
+    /* Single column layout */
     .timeline-item {
       width: 100%;
-      left: 0 !important;
-      padding-left: 65px;
-      padding-right: 15px;
+      left: 0;
       margin-bottom: 40px;
-      text-align: left !important;
-      transform: translateX(-30px) !important;
-      opacity: 0 !important;
-    }
-
-    .timeline-item:nth-child(odd),
-    .timeline-item:nth-child(even) {
-      transform: translateX(-30px) !important;
-      opacity: 0 !important;
-      left: 0 !important;
-      text-align: left !important;
+      padding-left: 70px;
+      padding-right: 15px;
+      text-align: left;
+      transform: translateX(0);
+      opacity: 0;
+      transition:
+        opacity 0.6s ease-out,
+        transform 0.6s ease-out;
     }
 
     .timeline-item.is-visible {
-      opacity: 1 !important;
-      transform: translateX(0) !important;
+      opacity: 1;
+      transform: translateX(0);
     }
 
-    .timeline-dot {
-      left: 30px !important;
-      right: auto !important;
-      transform: translateX(-50%) !important;
-      top: 35px !important;
-      --dot-translate: -50% !important;
-    }
-
-    .timeline-item:hover .timeline-dot {
-      transform: translateX(-50%) scale(1.25) !important;
-    }
-
-    .timeline-content::before {
-      left: -20px !important;
-      right: auto !important;
-      border-right-color: var(--bg-muted) !important;
-      border-left-width: 0 !important;
-      border-left-color: transparent !important;
-      border-right-width: 14px !important;
-      top: 38px !important;
-      transition: border-right-color 0.3s ease !important;
-    }
-
-    .timeline-item:hover .timeline-content::before {
-      border-right-color: var(--clr-2) !important;
-    }
-
-    .timeline-item:nth-child(odd) .timeline-header {
+    /* Adjust logo and info layout */
+    .timeline-header {
       flex-direction: row !important;
+      align-items: center;
+      gap: 15px;
     }
 
-    .timeline-item:nth-child(odd) .timeline-info {
+    .timeline-info {
       align-items: flex-start !important;
-    }
-
-    .timeline-company {
-      font-size: 1.3rem;
+      text-align: left;
     }
 
     .timeline-logo {
-      width: 60px;
-      height: 60px;
+      width: 55px;
+      height: 55px;
     }
 
+    /* Fix dot alignment */
     .timeline-dot {
-      top: 35px;
+      left: 24px !important;
+      top: 40px !important;
+      transform: translateX(-50%) scale(1);
+      width: 16px;
+      height: 16px;
     }
 
+    .timeline-item:hover .timeline-dot {
+      transform: translateX(-50%) scale(1.25);
+    }
+
+    /* Arrow pointing to the line */
     .timeline-content::before {
-      top: 38px;
+      content: "";
+      position: absolute;
+      left: -16px;
+      top: 40px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent var(--bg-muted) transparent transparent;
+      transition: border-right-color 0.3s ease;
     }
 
+    .timeline-item:hover .timeline-content::before {
+      border-right-color: var(--clr-2);
+    }
+
+    /* Content box adjustments */
+    .timeline-content {
+      padding: 20px 25px;
+      background-color: var(--bg-muted);
+      border-radius: 8px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .timeline-company {
+      font-size: 1.25rem;
+    }
+
+    .timeline-role {
+      font-size: 0.95rem;
+    }
+
+    /* Expand/collapse spacing */
     .description-content.is-collapsed {
-      max-height: 6.8em;
+      max-height: 6.5em;
     }
   }
 </style>
