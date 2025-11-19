@@ -2,18 +2,18 @@
 // You can import this data from anywhere in your site by using the `import` keyword.
 
 export const Name = 'Tarun RG';
-export const url = 'https://tarun-rg.in';
-export const img = "https://tarun-rg.in/tarun.webp";
-export const desig = 'Final year student @ Amrita Vishwa Vidyapeetham Chennai';
+export const url = 'https://tarunrg.in';
+export const img = "https://tarunrg.in/tarun.webp";
+export const desig = 'Data Analyst @ Tredence. Working as Data Engineer for India\'s Top Energy Company. ';
 export const profile = '/tarun.webp';
-const baseurl = "tarun-rg.in"
+const baseurl = "tarunrg.in"
 export const SITE_DESCRIPTION =
   'Tarun RG, final year CSE student at Amrita Vishwa Vidyapeetham Chennai';
 
 export const SOCIAL_MEDIA = {
   github: 'https://www.github.com/tr1ck-5t3r',
   linkedin: 'https://www.linkedin.com/in/tarun-r-g',
-  email: 'tarungovindharaj2003@gmail.com',
+  email: 'tarun.govindh@gmail.com',
 };
 
 type IconName =
